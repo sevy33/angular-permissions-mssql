@@ -1,0 +1,344 @@
+.permissions-container {
+  height: 100vh;
+  display: flex;
+  background-color: var(--background-color);
+}
+
+/* Sidebar Styling */
+.projects-sidebar {
+  width: 320px;
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+  background-color: #1e293b; /* Dark sidebar */
+  color: #f1f5f9;
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+
+  .mat-mdc-nav-list {
+    padding-top: 0;
+  }
+
+  .mat-mdc-list-item {
+    margin: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+
+    // Default state (Unselected) - Force light colors for dark sidebar
+    .mat-mdc-list-item-title {
+      color: #f1f5f9 !important; /* Slate 100 */
+    }
+    
+    .mat-mdc-list-item-line {
+      color: #94a3b8 !important; /* Slate 400 */
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      
+      .mat-mdc-list-item-title,
+      .mat-mdc-list-item-line {
+        color: white !important;
+      }
+    }
+
+    &.selected {
+      background-color: var(--primary-color);
+      
+      .mat-mdc-list-item-title,
+      .mat-mdc-list-item-line {
+        color: white !important;
+      }
+    }
+  }
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.5px;
+  }
+
+  button {
+    color: white;
+  }
+}
+
+.add-project-form {
+  padding: 1rem;
+  background: #334155;
+  border-bottom: 1px solid #475569;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+
+  mat-label {
+    color: #cbd5e1;
+  }
+
+  input, textarea {
+    color: white;
+  }
+
+  .full-width {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    
+    button {
+      color: white;
+    }
+  }
+}
+
+.sidebar-footer {
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+  button, a {
+    width: 100%;
+    color: #cbd5e1;
+    justify-content: flex-start;
+    
+    mat-icon {
+      margin-right: 12px;
+      color: #94a3b8;
+    }
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: white;
+      
+      mat-icon {
+        color: white;
+      }
+    }
+  }
+}
+
+/* Main Content Styling */
+.main-content {
+  flex: 1;
+  padding: 2rem 3rem;
+  overflow-y: auto;
+  background-color: var(--background-color);
+}
+
+.project-header {
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  
+  .header-content {
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .description {
+      color: var(--text-secondary);
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    .api-key-display {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      
+      .label {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      
+      code {
+        background-color: #f8fafc;
+        padding: 0.35rem 0.75rem;
+        border-radius: 6px;
+        font-family: 'Fira Code', monospace;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        border: 1px solid #e2e8f0;
+        font-weight: 500;
+      }
+      
+      button {
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        color: var(--text-secondary);
+        
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+
+        &:hover {
+          color: var(--primary-color);
+          background-color: rgba(99, 102, 241, 0.1);
+        }
+      }
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.tab-content {
+  padding: 2rem 0;
+}
+
+.empty-state {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  gap: 1.5rem;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: #cbd5e1;
+  }
+
+  h2 {
+    font-weight: 400;
+  }
+}
+
+.add-permission-form, .add-group-form {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+
+  mat-form-field {
+    flex: 1;
+  }
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  
+  th, td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+  }
+
+  th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  td {
+    color: var(--text-primary);
+  }
+
+  td:not(:first-child) {
+    text-align: center;
+  }
+  
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.matrix-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  background: white;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.small-icon-button {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  
+  &:hover {
+    opacity: 1;
+  }
+  
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.tab-icon {
+  margin-right: 8px;
+}
