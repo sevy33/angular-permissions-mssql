@@ -1,0 +1,415 @@
+{
+  "version": "1",
+  "dialect": "mssql",
+  "id": "1d194066-f8c4-455a-87cf-f99b12d98141",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
+  "ddl": [
+    {
+      "name": "group_permissions",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "permission_groups",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "permissions",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "projects",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "users",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "group_id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "group_permissions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "permission_id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "group_permissions"
+    },
+    {
+      "type": "bit",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "enabled",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "group_permissions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": {
+        "seed": 1,
+        "increment": 1
+      },
+      "name": "id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "permission_groups"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "project_id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "permission_groups"
+    },
+    {
+      "type": "varchar(255)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "name",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "permission_groups"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": {
+        "seed": 1,
+        "increment": 1
+      },
+      "name": "id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "permissions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "project_id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "permissions"
+    },
+    {
+      "type": "varchar(255)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "key",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "permissions"
+    },
+    {
+      "type": "varchar(max)",
+      "notNull": false,
+      "generated": null,
+      "identity": null,
+      "name": "description",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "permissions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": {
+        "seed": 1,
+        "increment": 1
+      },
+      "name": "id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "projects"
+    },
+    {
+      "type": "varchar(255)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "name",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "projects"
+    },
+    {
+      "type": "varchar(max)",
+      "notNull": false,
+      "generated": null,
+      "identity": null,
+      "name": "description",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "projects"
+    },
+    {
+      "type": "varchar(255)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "api_key",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "projects"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": {
+        "seed": 1,
+        "increment": 1
+      },
+      "name": "id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "varchar(255)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "username",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "varchar(255)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "password",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": null,
+      "name": "permission_group_id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "project_id",
+        "name"
+      ],
+      "name": "permission_groups_project_id_name_key",
+      "entityType": "uniques",
+      "table": "permission_groups",
+      "schema": "dbo"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "project_id",
+        "key"
+      ],
+      "name": "permissions_project_id_key_key",
+      "entityType": "uniques",
+      "table": "permissions",
+      "schema": "dbo"
+    },
+    {
+      "columns": [
+        "group_id"
+      ],
+      "nameExplicit": false,
+      "schemaTo": "dbo",
+      "tableTo": "permission_groups",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "group_permissions_group_id_permission_groups_id_fk",
+      "entityType": "fks",
+      "table": "group_permissions",
+      "schema": "dbo"
+    },
+    {
+      "columns": [
+        "permission_id"
+      ],
+      "nameExplicit": false,
+      "schemaTo": "dbo",
+      "tableTo": "permissions",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "group_permissions_permission_id_permissions_id_fk",
+      "entityType": "fks",
+      "table": "group_permissions",
+      "schema": "dbo"
+    },
+    {
+      "columns": [
+        "project_id"
+      ],
+      "nameExplicit": false,
+      "schemaTo": "dbo",
+      "tableTo": "projects",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "permission_groups_project_id_projects_id_fk",
+      "entityType": "fks",
+      "table": "permission_groups",
+      "schema": "dbo"
+    },
+    {
+      "columns": [
+        "project_id"
+      ],
+      "nameExplicit": false,
+      "schemaTo": "dbo",
+      "tableTo": "projects",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "permissions_project_id_projects_id_fk",
+      "entityType": "fks",
+      "table": "permissions",
+      "schema": "dbo"
+    },
+    {
+      "columns": [
+        "permission_group_id"
+      ],
+      "nameExplicit": false,
+      "schemaTo": "dbo",
+      "tableTo": "permission_groups",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "users_permission_group_id_permission_groups_id_fk",
+      "entityType": "fks",
+      "table": "users",
+      "schema": "dbo"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "group_id",
+        "permission_id"
+      ],
+      "name": "group_permissions_pkey",
+      "entityType": "pks",
+      "table": "group_permissions",
+      "schema": "dbo"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "id"
+      ],
+      "name": "permission_groups_pkey",
+      "table": "permission_groups",
+      "schema": "dbo",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "id"
+      ],
+      "name": "permissions_pkey",
+      "table": "permissions",
+      "schema": "dbo",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "id"
+      ],
+      "name": "projects_pkey",
+      "table": "projects",
+      "schema": "dbo",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "id"
+      ],
+      "name": "users_pkey",
+      "table": "users",
+      "schema": "dbo",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "api_key"
+      ],
+      "name": "projects_api_key_key",
+      "schema": "dbo",
+      "table": "projects",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "username"
+      ],
+      "name": "users_username_key",
+      "schema": "dbo",
+      "table": "users",
+      "entityType": "uniques"
+    },
+    {
+      "column": "enabled",
+      "nameExplicit": false,
+      "default": "((0))",
+      "name": "group_permissions_enabled_default",
+      "entityType": "defaults",
+      "schema": "dbo",
+      "table": "group_permissions"
+    }
+  ],
+  "renames": []
+}

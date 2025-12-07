@@ -1,45 +1,46 @@
-import { db } from './index';
+import { db, poolConnect } from './index';
 import { projects, permissions, permissionGroups, groupPermissions, users } from './schema';
 import { eq } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 
 async function seed() {
+  await poolConnect;
   console.log('Seeding database...');
 
   // 1. Create Project
-  const [project] = await db.insert(projects).values({
+  const [project] = await db.insert(projects).output().values({
     name: 'Operations Site',
     description: 'Main operations dashboard',
     apiKey: randomUUID(),
-  }).returning();
+  });
 
   console.log('Created Project:', project.name);
 
   // 2. Create Permissions
-  const [permNotification] = await db.insert(permissions).values({
+  const [permNotification] = await db.insert(permissions).output().values({
     projectId: project.id,
     key: 'menu.notification',
     description: 'Access to notifications menu',
-  }).returning();
+  });
 
-  const [permEmails] = await db.insert(permissions).values({
+  const [permEmails] = await db.insert(permissions).output().values({
     projectId: project.id,
     key: 'edit.emails',
     description: 'Ability to edit emails',
-  }).returning();
+  });
 
   console.log('Created Permissions');
 
   // 3. Create Groups
-  const [groupBasic] = await db.insert(permissionGroups).values({
+  const [groupBasic] = await db.insert(permissionGroups).output().values({
     projectId: project.id,
     name: 'Basic',
-  }).returning();
+  });
 
-  const [groupAdmin] = await db.insert(permissionGroups).values({
+  const [groupAdmin] = await db.insert(permissionGroups).output().values({
     projectId: project.id,
     name: 'Admin',
-  }).returning();
+  });
 
   console.log('Created Groups');
 

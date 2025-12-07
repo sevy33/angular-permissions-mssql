@@ -4,7 +4,7 @@ import 'dotenv/config';
 export default defineConfig({
   out: './drizzle',
   schema: './src/db/schema.ts',
-  dialect: 'postgresql',
+  dialect: 'mssql',
   dbCredentials: {
     url: process.env['DATABASE_URL']!,
   },

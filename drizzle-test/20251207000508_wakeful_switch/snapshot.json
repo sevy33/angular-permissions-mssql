@@ -1,0 +1,36 @@
+{
+  "version": "1",
+  "dialect": "mssql",
+  "id": "0ffee700-0f0d-4269-9915-9b35f9d967ff",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
+  "ddl": [
+    {
+      "name": "users",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "schema": "dbo",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "id"
+      ],
+      "name": "users_pkey",
+      "table": "users",
+      "schema": "dbo",
+      "entityType": "pks"
+    }
+  ],
+  "renames": []
+}

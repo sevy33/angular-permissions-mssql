@@ -20,30 +20,38 @@ authRoutes.get('/me', async (c) => {
     const payload = await verify(token, JWT_SECRET);
     const userId = payload['sub'] as number;
 
-    const user = await db.query.users.findFirst({
-      where: eq(users.id, userId),
-      with: {
-        permissionGroup: {
-          with: {
-            groupPermissions: {
-              with: {
-                permission: true
-              }
-            }
-          }
-        }
-      }
-    });
+    const [foundUser] = await db.select().top(1).from(users).where(eq(users.id, userId));
 
-    if (!user) {
+    if (!foundUser) {
       return c.json({ error: 'User not found' }, 404);
     }
+
+    let permissionGroup = null;
+    if (foundUser.permissionGroupId) {
+      const [group] = await db.select().top(1).from(permissionGroups).where(eq(permissionGroups.id, foundUser.permissionGroupId));
+      if (group) {
+        const gpData = await db.select()
+          .from(groupPermissions)
+          .innerJoin(permissions, eq(groupPermissions.permissionId, permissions.id))
+          .where(eq(groupPermissions.groupId, group.id));
+        
+        permissionGroup = {
+          ...group,
+          groupPermissions: gpData.map((row: any) => ({
+            ...row.group_permissions,
+            permission: row.permissions
+          }))
+        };
+      }
+    }
+
+    const user = { ...foundUser, permissionGroup };
 
     return c.json({
       id: user.id,
       username: user.username,
       group: user.permissionGroup?.name,
-      permissions: user.permissionGroup?.groupPermissions.map(gp => ({
+      permissions: user.permissionGroup?.groupPermissions.map((gp: any) => ({
         key: gp.permission.key,
         enabled: gp.enabled
       }))
@@ -62,20 +70,30 @@ authRoutes.post('/login', async (c) => {
   }
 
   // Find user
-  const user = await db.query.users.findFirst({
-    where: eq(users.username, username),
-    with: {
-      permissionGroup: {
-        with: {
-          groupPermissions: {
-            with: {
-              permission: true
-            }
-          }
-        }
+  const [foundUser] = await db.select().top(1).from(users).where(eq(users.username, username));
+  
+  let user = null;
+  if (foundUser) {
+    let permissionGroup = null;
+    if (foundUser.permissionGroupId) {
+      const [group] = await db.select().top(1).from(permissionGroups).where(eq(permissionGroups.id, foundUser.permissionGroupId));
+      if (group) {
+        const gpData = await db.select()
+          .from(groupPermissions)
+          .innerJoin(permissions, eq(groupPermissions.permissionId, permissions.id))
+          .where(eq(groupPermissions.groupId, group.id));
+        
+        permissionGroup = {
+          ...group,
+          groupPermissions: gpData.map((row: any) => ({
+            ...row.group_permissions,
+            permission: row.permissions
+          }))
+        };
       }
     }
-  });
+    user = { ...foundUser, permissionGroup };
+  }
 
   if (!user) {
     return c.json({ error: 'Invalid credentials' }, 401);
@@ -129,7 +147,7 @@ authRoutes.post('/login', async (c) => {
     id: user.id,
     username: user.username,
     group: user.permissionGroup?.name,
-    permissions: user.permissionGroup?.groupPermissions.map(gp => ({
+    permissions: user.permissionGroup?.groupPermissions.map((gp: any) => ({
       key: gp.permission.key,
       enabled: gp.enabled
     }))

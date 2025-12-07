@@ -15,23 +15,22 @@ permissionRoutes.post('/permissions', async (c) => {
   }
 
   // Check for duplicate
-  const existing = await db.select()
+  const existing = await db.select().top(1)
     .from(permissions)
     .where(and(
       eq(permissions.projectId, projectId),
       eq(permissions.key, key)
-    ))
-    .limit(1);
+    ));
 
   if (existing.length > 0) {
     return c.json({ error: 'Permission key already exists in this project' }, 409);
   }
 
-  const [newPermission] = await db.insert(permissions).values({
+  const [newPermission] = await db.insert(permissions).output().values({
     projectId,
     key,
     description
-  }).returning();
+  });
 
   return c.json(newPermission);
 });
@@ -44,8 +43,8 @@ permissionRoutes.put('/permissions/:id', async (c) => {
 
   const [updatedPermission] = await db.update(permissions)
     .set({ key, description })
-    .where(eq(permissions.id, id))
-    .returning();
+    .output()
+    .where(eq(permissions.id, id));
 
   return c.json(updatedPermission);
 });

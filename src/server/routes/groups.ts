@@ -16,22 +16,21 @@ groupRoutes.post('/projects/:projectId/groups', async (c) => {
   }
 
   // Check for duplicate
-  const existing = await db.select()
+  const existing = await db.select().top(1)
     .from(permissionGroups)
     .where(and(
       eq(permissionGroups.projectId, projectId),
       eq(permissionGroups.name, name)
-    ))
-    .limit(1);
+    ));
 
   if (existing.length > 0) {
     return c.json({ error: 'Group name already exists in this project' }, 409);
   }
 
-  const [newGroup] = await db.insert(permissionGroups).values({
+  const [newGroup] = await db.insert(permissionGroups).output().values({
     projectId,
     name
-  }).returning();
+  });
 
   return c.json(newGroup);
 });
@@ -43,12 +42,22 @@ groupRoutes.post('/groups/:groupId/permissions', async (c) => {
   const { permissionId, enabled } = body;
 
   // Upsert
-  await db.insert(groupPermissions)
-    .values({ groupId, permissionId, enabled })
-    .onConflictDoUpdate({
-      target: [groupPermissions.groupId, groupPermissions.permissionId],
-      set: { enabled }
-    });
+  const existing = await db.select().top(1).from(groupPermissions).where(and(
+    eq(groupPermissions.groupId, groupId),
+    eq(groupPermissions.permissionId, permissionId)
+  ));
+
+  if (existing.length > 0) {
+    await db.update(groupPermissions)
+      .set({ enabled })
+      .where(and(
+        eq(groupPermissions.groupId, groupId),
+        eq(groupPermissions.permissionId, permissionId)
+      ));
+  } else {
+    await db.insert(groupPermissions)
+      .values({ groupId, permissionId, enabled });
+  }
 
   return c.json({ success: true });
 });
